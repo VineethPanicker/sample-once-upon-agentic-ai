@@ -1,0 +1,738 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Once Upon Agentic AI Field Guide</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+body { margin: 0; }
+/* Layout: a reference handbook — sticky chapter index on the left (desktop), one reading column, code and diagrams in their own scroll boxes */
+:root {
+  --bg: #f5f6fa;
+  --paper: #ffffff;
+  --ink: #1b1f2e;
+  --muted: #5a6077;
+  --line: #dde0ea;
+  --accent: #3b3fb6;      /* d20 indigo */
+  --accent-soft: #e8e9fb;
+  --gold: #9a6a00;        /* treasure / tips */
+  --gold-soft: #fbf2dc;
+  --warn: #a8321f;
+  --warn-soft: #fbe7e3;
+  --ok: #1d7a4e;
+  --ok-soft: #e1f4ea;
+  --code-bg: #f0f1f7;
+  --font-display: "Bricolage Grotesque", "Avenir Next", "Segoe UI", system-ui, sans-serif;
+  --font-body: "Source Serif 4", Georgia, "Times New Roman", serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --step--1: 0.875rem;
+  --step-0: 1.0625rem;
+  --step-1: 1.25rem;
+  --step-2: 1.6rem;
+  --step-3: 2.2rem;
+  --step-4: clamp(2.2rem, 5vw, 3.4rem);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #11131b; --paper: #181b26; --ink: #e6e8f2; --muted: #9ba1b8; --line: #2b2f40;
+    --accent: #9da1ff; --accent-soft: #23264a; --gold: #e5b54a; --gold-soft: #2e2716;
+    --warn: #ff8f7a; --warn-soft: #3a1d18; --ok: #6fd3a0; --ok-soft: #15301f; --code-bg: #10121a;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #11131b; --paper: #181b26; --ink: #e6e8f2; --muted: #9ba1b8; --line: #2b2f40;
+  --accent: #9da1ff; --accent-soft: #23264a; --gold: #e5b54a; --gold-soft: #2e2716;
+  --warn: #ff8f7a; --warn-soft: #3a1d18; --ok: #6fd3a0; --ok-soft: #15301f; --code-bg: #10121a;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: var(--step-0);
+  line-height: 1.65;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+a { color: var(--accent); text-underline-offset: 3px; }
+a:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
+h1, h2, h3, h4 { font-family: var(--font-display); line-height: 1.15; text-wrap: balance; margin: 0; }
+p { margin: 0; }
+code { font-family: var(--font-mono); font-size: 0.86em; background: var(--code-bg); padding: 0.1em 0.35em; border-radius: 4px; overflow-wrap: anywhere; }
+
+.shell {
+  max-width: 1180px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 240px minmax(0, 1fr);
+  gap: 48px;
+  padding-block: 40px 80px;
+}
+@media (max-width: 900px) {
+  .shell { grid-template-columns: minmax(0, 1fr); gap: 24px; padding-block: 24px 56px; }
+}
+
+/* index */
+.toc { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 24px); align-self: start; font-family: var(--font-display); }
+.toc h2 { font-size: var(--step--1); text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin-bottom: 12px; }
+.toc ol { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; }
+.toc a { display: flex; gap: 10px; align-items: baseline; text-decoration: none; color: var(--ink); padding: 6px 10px; border-radius: 6px; font-size: 0.95rem; }
+.toc a:hover { background: var(--accent-soft); }
+.toc .n { font-family: var(--font-mono); font-size: 0.75rem; color: var(--muted); min-width: 1.6em; font-variant-numeric: tabular-nums; }
+@media (max-width: 900px) {
+  .toc { position: static; background: var(--paper); border: 1px solid var(--line); border-radius: 10px; padding: 16px; }
+  .toc ol { grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); }
+}
+
+main { min-width: 0; display: grid; gap: 56px; }
+
+/* hero */
+.hero { display: grid; gap: 16px; padding-bottom: 8px; border-bottom: 1px solid var(--line); padding-block-end: 32px; }
+.eyebrow { font-family: var(--font-display); font-size: var(--step--1); text-transform: uppercase; letter-spacing: 0.1em; color: var(--accent); font-weight: 700; }
+.hero h1 { font-size: var(--step-4); font-weight: 800; letter-spacing: -0.02em; }
+.lede { font-size: var(--step-1); color: var(--muted); max-width: 62ch; }
+.facts { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
+.chip { font-family: var(--font-mono); font-size: 0.78rem; border: 1px solid var(--line); background: var(--paper); border-radius: 999px; padding: 4px 10px; color: var(--muted); }
+
+/* sections */
+section { display: grid; gap: 18px; scroll-margin-top: 24px; }
+section > h2 { font-size: var(--step-3); font-weight: 700; letter-spacing: -0.01em; display: flex; gap: 14px; align-items: baseline; flex-wrap: wrap; }
+section > h2 .ch { font-family: var(--font-mono); font-size: var(--step--1); color: var(--accent); background: var(--accent-soft); padding: 3px 9px; border-radius: 6px; font-weight: 600; letter-spacing: 0; }
+h3 { font-size: var(--step-1); font-weight: 700; margin-top: 8px; }
+.prose { display: grid; gap: 14px; max-width: 68ch; }
+.prose ul, .prose ol { margin: 0; padding-left: 1.3em; display: grid; gap: 6px; }
+
+/* callouts */
+.callout { border-radius: 10px; padding: 14px 18px; display: grid; gap: 6px; max-width: 72ch; }
+.callout .label { font-family: var(--font-display); font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.09em; font-weight: 700; }
+.analogy { background: var(--accent-soft); }
+.analogy .label { color: var(--accent); }
+.remember { background: var(--gold-soft); }
+.remember .label { color: var(--gold); }
+.gotcha { background: var(--warn-soft); }
+.gotcha .label { color: var(--warn); }
+.saw { background: var(--ok-soft); }
+.saw .label { color: var(--ok); }
+
+/* code */
+.code { position: relative; background: var(--code-bg); border: 1px solid var(--line); border-radius: 10px; min-width: 0; }
+.code .head { display: flex; justify-content: space-between; align-items: center; gap: 8px; padding: 8px 12px; border-bottom: 1px solid var(--line); font-family: var(--font-mono); font-size: 0.75rem; color: var(--muted); }
+.code pre { margin: 0; padding: 14px 16px; overflow-x: auto; font-family: var(--font-mono); font-size: 0.84rem; line-height: 1.6; }
+.code pre code { background: none; padding: 0; font-size: inherit; }
+.copy { font-family: var(--font-display); font-size: 0.75rem; border: 1px solid var(--line); background: var(--paper); color: var(--ink); border-radius: 6px; padding: 3px 10px; cursor: pointer; }
+.copy:hover { border-color: var(--accent); color: var(--accent); }
+.c { color: var(--muted); }
+.k { color: var(--accent); font-weight: 600; }
+.s { color: var(--ok); }
+
+/* tables */
+.table-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 10px; background: var(--paper); }
+table { border-collapse: collapse; width: 100%; font-size: 0.95rem; min-width: 540px; }
+th, td { text-align: left; padding: 10px 14px; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { font-family: var(--font-display); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); font-weight: 700; background: var(--bg); }
+tr:last-child td { border-bottom: 0; }
+td code { white-space: nowrap; }
+
+/* map of the journey */
+.journey { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; }
+.stop { background: var(--paper); border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; display: grid; gap: 4px; align-content: start; }
+.stop .num { font-family: var(--font-mono); font-size: 0.72rem; color: var(--accent); }
+.stop strong { font-family: var(--font-display); font-size: 1rem; line-height: 1.25; }
+.stop span { font-size: 0.88rem; color: var(--muted); line-height: 1.45; }
+.stop.skip { border-style: dashed; }
+
+/* architecture diagram */
+.arch { background: var(--paper); border: 1px solid var(--line); border-radius: 12px; padding: 20px; overflow-x: auto; }
+.arch-grid { display: grid; grid-template-columns: 1fr auto 1.2fr auto 1.3fr; align-items: center; gap: 10px; min-width: 640px; font-family: var(--font-display); }
+.node { border: 1.5px solid var(--line); border-radius: 10px; padding: 10px 12px; background: var(--bg); display: grid; gap: 2px; }
+.node b { font-size: 0.95rem; }
+.node small { font-family: var(--font-mono); font-size: 0.72rem; color: var(--muted); }
+.node.hub { border-color: var(--accent); background: var(--accent-soft); }
+.arrow { font-family: var(--font-mono); font-size: 0.72rem; color: var(--muted); text-align: center; white-space: nowrap; }
+.arrow::after { content: "──▶"; display: block; color: var(--accent); font-size: 0.9rem; }
+.spokes { display: grid; gap: 10px; }
+.spoke { display: grid; grid-template-columns: auto 1fr; gap: 10px; align-items: center; }
+
+/* glossary */
+.gloss { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; }
+.term { background: var(--paper); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; display: grid; gap: 4px; align-content: start; }
+.term dt { font-family: var(--font-display); font-weight: 700; }
+.term dd { margin: 0; font-size: 0.95rem; color: var(--muted); line-height: 1.5; }
+
+footer { color: var(--muted); font-size: var(--step--1); border-top: 1px solid var(--line); padding-top: 20px; }
+
+@media (prefers-reduced-motion: no-preference) {
+  .toc a, .copy { transition: background-color .15s ease, color .15s ease, border-color .15s ease; }
+}
+</style>
+</head>
+<body>
+
+<div class="shell">
+  <nav class="toc" aria-label="Chapters">
+    <h2>Contents</h2>
+    <ol>
+      <li><a href="#big-picture"><span class="n">00</span>The big picture</a></li>
+      <li><a href="#setup"><span class="n">00</span>Setting up</a></li>
+      <li><a href="#ch1"><span class="n">01</span>Your first agent</a></li>
+      <li><a href="#ch2"><span class="n">02</span>Ready-made tools</a></li>
+      <li><a href="#ch3"><span class="n">03</span>Your own tool</a></li>
+      <li><a href="#ch4"><span class="n">04</span>MCP</a></li>
+      <li><a href="#ch5"><span class="n">05</span>A2A teamwork</a></li>
+      <li><a href="#ch6"><span class="n">06</span>Web interface</a></li>
+      <li><a href="#ch7"><span class="n">07</span>The harness</a></li>
+      <li><a href="#ch8"><span class="n">08</span>Production (skipped)</a></li>
+      <li><a href="#troubles"><span class="n">!!</span>Problems we hit</a></li>
+      <li><a href="#glossary"><span class="n">Aa</span>Glossary</a></li>
+      <li><a href="#cheatsheet"><span class="n">&gt;_</span>Command cheat sheet</a></li>
+    </ol>
+  </nav>
+
+  <main>
+    <header class="hero">
+      <p class="eyebrow">Workshop notes · Strands Agents SDK on Amazon Bedrock</p>
+      <h1>Once Upon Agentic AI, explained in plain words</h1>
+      <p class="lede">A reference for everything we built: an AI Game Master for a fantasy role-playing game. It grew from one chatbot into a small team of cooperating agents. Each chapter below says what the idea is, gives an everyday comparison, shows the code, and records what actually happened when we ran it.</p>
+      <div class="facts">
+        <span class="chip">Python 3.13.5</span>
+        <span class="chip">strands-agents 1.61.1</span>
+        <span class="chip">strands-harness 0.3.1</span>
+        <span class="chip">model: Amazon Nova 2 Lite</span>
+        <span class="chip">region: us-east-1</span>
+      </div>
+    </header>
+
+    <!-- BIG PICTURE -->
+    <section id="big-picture">
+      <h2>The big picture</h2>
+      <div class="prose">
+        <p><strong>An AI agent is a language model that can do things, not just talk.</strong> A plain chatbot only writes text. An agent can also decide to use <em>tools</em>: roll a die, look something up on the web, read a database, or ask another agent for help. Then it uses the results to write its answer.</p>
+        <p>Every agent runs the same loop, which Strands calls the <em>agent loop</em>:</p>
+        <ol>
+          <li>Read the instructions (the system prompt) and the user's message.</li>
+          <li>Think: "Can I answer directly, or do I need a tool?"</li>
+          <li>If it needs a tool, ask for that tool with specific inputs. Strands runs the tool and hands back the result.</li>
+          <li>Repeat steps 2–3 as often as needed, then write the final answer.</li>
+        </ol>
+      </div>
+      <div class="callout analogy">
+        <span class="label">Everyday comparison</span>
+        <p>The model is a clever new employee who has read a lot but can't leave their desk. The <strong>system prompt</strong> is their job description. <strong>Tools</strong> are the phone, calculator and filing cabinet on the desk. <strong>Strands</strong> is the office manager: it passes messages back and forth, makes the phone calls the employee asks for, and keeps the conversation notes.</p>
+      </div>
+      <h3>The journey, one chapter at a time</h3>
+      <div class="journey">
+        <div class="stop"><span class="num">CH 1</span><strong>One agent</strong><span>A model plus a personality. No tools.</span></div>
+        <div class="stop"><span class="num">CH 2</span><strong>Ready-made tools</strong><span>Fetch real spell data from the web.</span></div>
+        <div class="stop"><span class="num">CH 3</span><strong>Your own tool</strong><span>A Python dice roller the agent can call.</span></div>
+        <div class="stop"><span class="num">CH 4</span><strong>MCP</strong><span>The dice roller becomes its own server.</span></div>
+        <div class="stop"><span class="num">CH 5</span><strong>A2A</strong><span>A Rules Agent and a Character Agent join a Game Master.</span></div>
+        <div class="stop"><span class="num">CH 6</span><strong>Web UI</strong><span>Play in the browser.</span></div>
+        <div class="stop"><span class="num">CH 7</span><strong>Harness</strong><span>The same Game Master, mostly pre-assembled.</span></div>
+        <div class="stop skip"><span class="num">CH 8</span><strong>Production</strong><span>Deploy to AWS AgentCore. Skipped.</span></div>
+      </div>
+    </section>
+
+    <!-- SETUP -->
+    <section id="setup">
+      <h2>Setting up the workshop</h2>
+      <div class="prose">
+        <p>Before any agent can run you need four things: Python, the project's libraries, AWS credentials, and permission to use a model on Amazon Bedrock.</p>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Piece</th><th>What it is, in plain words</th><th>How we got it</th></tr></thead>
+          <tbody>
+            <tr><td><strong>uv</strong></td><td>A fast installer that manages Python versions and project libraries.</td><td>The official installer script. Homebrew wasn't installed on this Mac.</td></tr>
+            <tr><td><strong>Python 3.13.5</strong></td><td>The language everything is written in. The repo pins this version in <code>.python-version</code>.</td><td><code>uv python install</code></td></tr>
+            <tr><td><strong>.venv</strong></td><td>A private folder holding this project's libraries, so they don't clash with other projects.</td><td><code>uv sync</code> created it from <code>pyproject.toml</code>.</td></tr>
+            <tr><td><strong>AWS CLI</strong></td><td>A command-line tool for talking to your AWS account.</td><td>The official Apple-signed <code>.pkg</code>, installed just for your user into <code>~/aws-cli</code>.</td></tr>
+            <tr><td><strong>Credentials</strong></td><td>An access key that proves to AWS who you are. Ours belong to an IAM user in your own account.</td><td><code>aws configure</code> wrote them to <code>~/.aws/credentials</code>.</td></tr>
+            <tr><td><strong>Model access</strong></td><td>Permission to use a particular AI model on Bedrock.</td><td>Claude needed a use-case form plus a Marketplace subscription. Nova needed nothing extra. See <a href="#troubles">Problems we hit</a>.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout remember">
+        <span class="label">Remember</span>
+        <p>Activating the environment (<code>source .venv/bin/activate</code>) only affects the terminal you type it in. Each new terminal needs it again. The alternative is to run commands as <code>uv run python …</code>, which needs no activation.</p>
+      </div>
+    </section>
+
+    <!-- CH1 -->
+    <section id="ch1">
+      <h2><span class="ch">CH 1</span>Your first agent</h2>
+      <div class="prose">
+        <p>The smallest possible agent is a model plus a <strong>system prompt</strong>, the standing instructions that set its role and tone. Calling the agent like a function sends a message and returns its reply.</p>
+        <p>We also switched on <strong>debug logging</strong>, which prints what Strands is doing behind the scenes: which model it chose, which region, and how many tools it found.</p>
+      </div>
+      <div class="code">
+        <div class="head"><span>1_strands_basics/simple_agent.py</span><button class="copy" type="button">Copy</button></div>
+<pre><code><span class="k">import</span> logging
+<span class="k">from</span> strands <span class="k">import</span> Agent
+
+<span class="c"># Step 1 – show Strands' internal logs</span>
+logging.getLogger(<span class="s">"strands"</span>).setLevel(logging.DEBUG)
+logging.basicConfig(format=<span class="s">"%(levelname)s | %(name)s | %(message)s"</span>,
+                    handlers=[logging.StreamHandler()])
+
+<span class="c"># Step 2 – create the agent with a role</span>
+agent = Agent(
+    model=<span class="s">"global.amazon.nova-2-lite-v1:0"</span>,
+    system_prompt=<span class="s">"You are a game master for a fantasy role-playing game"</span>,
+)
+
+<span class="c"># Step 3 – talk to it</span>
+agent(<span class="s">"Hi, I am an adventurer ready for adventure!"</span>)</code></pre>
+      </div>
+      <div class="callout saw">
+        <span class="label">What we saw</span>
+        <p>The Game Master welcomed us into "the Rusty Flagon" tavern and asked for a name, race, class and one defining trait. The logs showed <code>tool_count=&lt;0&gt;</code>, since this agent has no tools yet. With no <code>model=</code> line, Strands picks Claude Sonnet 4.6 on Bedrock and takes the region from your AWS config.</p>
+      </div>
+      <div class="callout remember">
+        <span class="label">Remember</span>
+        <ul>
+          <li>The <strong>model</strong> is the brain. The <strong>system prompt</strong> is the job description. The <strong>message</strong> is the request.</li>
+          <li>Without tools, everything the agent says comes from its training. It can sound confident and still be wrong.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- CH2 -->
+    <section id="ch2">
+      <h2><span class="ch">CH 2</span>Ready-made ("vended") tools</h2>
+      <div class="prose">
+        <p>A <strong>tool</strong> is a function the agent can choose to call. Strands ships with ready-made ones, called <strong>vended tools</strong>, such as <code>http_request</code> (fetch a web page or API), <code>shell</code> (run a terminal command) and <code>file_editor</code> (create and edit files).</p>
+        <p>We gave the Game Master <code>http_request</code>, and the system prompt told it where spell data lives: the free Open5e API. Asked about Fireball, the agent built the address <code>https://api.open5e.com/v2/spells/srd_fireball/</code> itself, fetched it, and answered from the real data.</p>
+      </div>
+      <div class="code">
+        <div class="head"><span>2_vended_tools/agent_with_vended_tools.py</span><button class="copy" type="button">Copy</button></div>
+<pre><code><span class="k">from</span> strands.vended_tools <span class="k">import</span> http_request
+
+agent = Agent(
+    model=<span class="s">"global.amazon.nova-2-lite-v1:0"</span>,
+    tools=[http_request],
+    system_prompt=<span class="s">"""... look it up on the Open5e API ...
+    spells: https://api.open5e.com/v2/spells/srd_&lt;key&gt;/"""</span>,
+)
+agent(<span class="s">"What does the Fireball spell do, and how much damage does it deal?"</span>)</code></pre>
+      </div>
+      <div class="callout saw">
+        <span class="label">What we saw</span>
+        <p>The log showed <code>Tool #1: http_request</code> and <code>Tool #2: http_request</code>. The answer matched the official rules: 8d6 fire damage in a 20-foot radius, a Dexterity save halves it, and +1d6 for each spell slot above 3rd.</p>
+      </div>
+      <h3>Bonus quest: tools that need your permission</h3>
+      <div class="prose">
+        <p><code>shell</code> and <code>file_editor</code> are powerful: they can change files and run programs on your computer. So we wrapped the agent in <strong>Human-in-the-loop</strong>. Before every tool call it stops and asks you in the terminal to approve or reject.</p>
+      </div>
+      <div class="code">
+        <div class="head"><span>2_vended_tools/bonus_quest.py</span><button class="copy" type="button">Copy</button></div>
+<pre><code><span class="k">from</span> strands.vended_tools <span class="k">import</span> shell, file_editor
+<span class="k">from</span> strands.vended_interventions.hitl <span class="k">import</span> HumanInTheLoop
+
+arcane_scribe = Agent(
+    tools=[shell, file_editor],
+    interventions=[HumanInTheLoop(ask=<span class="s">"stdio"</span>)],   <span class="c"># ask in the terminal</span>
+    ...
+)</code></pre>
+      </div>
+      <div class="callout analogy">
+        <span class="label">Everyday comparison</span>
+        <p>Human-in-the-loop is like giving an intern a company card that texts you before every purchase. They can still get the job done, and nothing happens without your OK.</p>
+      </div>
+    </section>
+
+    <!-- CH3 -->
+    <section id="ch3">
+      <h2><span class="ch">CH 3</span>Forging your own tool</h2>
+      <div class="prose">
+        <p>Any Python function becomes a tool when you put <code>@tool</code> above it. The model never sees your code. It only sees a short description that Strands builds from three things:</p>
+        <ul>
+          <li>the <strong>function name</strong> (<code>roll_dice</code>),</li>
+          <li>the <strong>parameters and their types</strong> (<code>faces: int = 6</code>),</li>
+          <li>the <strong>docstring</strong>: its summary line and its <code>Args:</code> section.</li>
+        </ul>
+        <p>That's why a clear docstring matters: it's the instruction manual the model reads to decide when and how to use your tool.</p>
+      </div>
+      <div class="code">
+        <div class="head"><span>3_custom_tools/agent_with_dice_roll_tool.py</span><button class="copy" type="button">Copy</button></div>
+<pre><code><span class="k">from</span> strands <span class="k">import</span> Agent, tool
+
+<span class="k">@tool</span>
+<span class="k">def</span> roll_dice(faces: int = 6) -&gt; int:
+    <span class="s">"""Roll a single die with the given number of faces.
+
+    Args:
+        faces: Number of faces on the die (e.g. 4, 6, 8, 10, 12, 20). Defaults to 6.
+
+    Returns:
+        The rolled value, between 1 and faces.
+    """</span>
+    <span class="k">import</span> random
+    <span class="k">return</span> random.randint(1, faces)
+
+dice_master = Agent(
+    model=<span class="s">"global.amazon.nova-2-lite-v1:0"</span>,
+    tools=[roll_dice],
+    system_prompt=<span class="s">"""... roll 4d6, drop the lowest die.
+    Every die must come from the roll_dice tool: call it once per die and never invent a result."""</span>,
+)</code></pre>
+      </div>
+      <div class="callout gotcha">
+        <span class="label">Lesson learned: having a tool doesn't mean the agent uses it</span>
+        <p>Rolling four ability scores at "4d6 drop lowest" takes 16 dice. At first, Nova called the tool only 4 to 8 times and <strong>invented the rest</strong> of the dice in its answer. Adding one sentence to the system prompt ("call it once per die and never invent a result") fixed it: 16 real rolls in every test run.</p>
+        <p>To check, count the <code>Tool #N: roll_dice</code> lines in the output and compare them with the dice in the answer.</p>
+      </div>
+      <div class="callout remember">
+        <span class="label">Remember</span>
+        <p><code>print(roll_dice.tool_spec)</code> shows exactly what the model is told about your tool. Run it when a tool is being ignored or misused.</p>
+      </div>
+    </section>
+
+    <!-- CH4 -->
+    <section id="ch4">
+      <h2><span class="ch">CH 4</span>MCP: sharing tools between programs</h2>
+      <div class="prose">
+        <p>In Chapter 3 the dice roller lived <em>inside</em> the agent's program. <strong>MCP (Model Context Protocol)</strong> is an open standard for putting tools in a separate program, an <strong>MCP server</strong>, that any AI app can connect to: a Strands agent, Claude Code, an IDE, or something written in another language.</p>
+        <p>We moved the dice roller into a small server at <code>http://localhost:8002/mcp</code>. The Game Master connects to it as an <strong>MCP client</strong>, asks "what tools do you have?", and calls <code>roll_dice</code> over the network.</p>
+      </div>
+      <div class="callout analogy">
+        <span class="label">Everyday comparison</span>
+        <p>MCP is like USB for AI tools. Before USB, every printer needed its own special cable. Now any device plugs into any computer. An MCP server is the device, and any MCP-aware app can plug into it.</p>
+      </div>
+      <div class="code">
+        <div class="head"><span>4_mcp_integration/dice_roll_mcp_server.py (the server)</span><button class="copy" type="button">Copy</button></div>
+<pre><code><span class="k">from</span> mcp.server <span class="k">import</span> FastMCP
+
+mcp = FastMCP(port=8002)
+
+<span class="k">@mcp.tool()</span>                       <span class="c"># expose this function over MCP</span>
+<span class="k">def</span> roll_dice(faces: int = 6) -&gt; int:
+    ...
+
+mcp.run(transport=<span class="s">"streamable-http"</span>)   <span class="c"># serve it over HTTP</span></code></pre>
+      </div>
+      <div class="code">
+        <div class="head"><span>4_mcp_integration/gamemaster_mcp_client.py (the client)</span><button class="copy" type="button">Copy</button></div>
+<pre><code><span class="k">from</span> strands.tools.mcp <span class="k">import</span> MCPClient
+<span class="k">from</span> mcp.client.streamable_http <span class="k">import</span> streamablehttp_client
+
+mcp_client = MCPClient(<span class="k">lambda</span>: streamablehttp_client(<span class="s">"http://localhost:8002/mcp"</span>))
+
+gamemaster = Agent(
+    model=<span class="s">"global.amazon.nova-2-lite-v1:0"</span>,
+    tools=[mcp_client],   <span class="c"># Strands connects and finds the server's tools by itself</span>
+    ...
+)</code></pre>
+      </div>
+      <div class="prose">
+        <p>The <code>lambda</code> is a recipe for opening the connection, not the connection itself. Strands uses it to connect when the agent starts and to reconnect if needed.</p>
+      </div>
+      <div class="callout saw">
+        <span class="label">What we saw</span>
+        <p>Running it takes two terminals: the server in one, the client in the other. Every roll printed <code>🎲 DICE ROLL: d6 = …</code> in the server's terminal, which proved the rolls were real. Nova again sometimes rolled fewer than 16 dice and got the drop-lowest maths wrong. That's a weakness of the model, not of MCP: the connection worked every time.</p>
+      </div>
+      <div class="callout gotcha">
+        <span class="label">Gotcha</span>
+        <p>Only one program can use a port at a time. If a server is already running on 8002, starting another fails with "address already in use". Stop the old one with <strong>Ctrl+C</strong> first, or check what's there with <code>lsof -nP -iTCP:8002 -sTCP:LISTEN</code>.</p>
+      </div>
+    </section>
+
+    <!-- CH5 -->
+    <section id="ch5">
+      <h2><span class="ch">CH 5</span>A2A: agents working as a team</h2>
+      <div class="prose">
+        <p>MCP connects an agent to <em>tools</em>. <strong>A2A (Agent-to-Agent)</strong> connects an agent to <em>other agents</em>. Each specialist agent runs as its own web server and publishes an <strong>agent card</strong> at <code>/.well-known/agent-card.json</code>: its name, what it does, and which skills (tools) it has. The Game Master reads these cards to find out who can help, then sends them questions in plain language.</p>
+      </div>
+      <div class="arch" role="img" aria-label="Diagram: the web UI calls the Game Master on port 8009, which uses MCP to reach the dice server on 8002 and A2A to reach the Rules Agent on 8000 and the Character Agent on 8001">
+        <div class="arch-grid">
+          <div class="node"><b>You / Web UI</b><small>browser or test.http</small></div>
+          <div class="arrow">POST /inquire</div>
+          <div class="node hub"><b>Game Master</b><small>FastAPI · port 8009</small><small>answers as StoryOutput</small></div>
+          <div class="arrow">uses</div>
+          <div class="spokes">
+            <div class="spoke"><span class="arrow">MCP</span><div class="node"><b>Dice server</b><small>:8002 · roll_dice</small></div></div>
+            <div class="spoke"><span class="arrow">A2A</span><div class="node"><b>Rules Agent</b><small>:8000 · query_rules → ChromaDB</small></div></div>
+            <div class="spoke"><span class="arrow">A2A</span><div class="node"><b>Character Agent</b><small>:8001 · create / find / list</small></div></div>
+          </div>
+        </div>
+      </div>
+      <div class="callout analogy">
+        <span class="label">Everyday comparison</span>
+        <p>The Game Master is a restaurant's head waiter. They don't cook. They take your order, send the rules question to the "rules librarian" and the character sheet to the "records clerk", roll any dice themselves, and bring everything back on one plate (the <code>StoryOutput</code>).</p>
+      </div>
+
+      <h3>The Rules Agent and its knowledge base</h3>
+      <div class="prose">
+        <p>The Rules Agent answers from the official D&amp;D Basic Rules PDF, not from memory. That works through a <strong>knowledge base</strong>, a pattern often called <strong>RAG (retrieval-augmented generation)</strong>:</p>
+        <ol>
+          <li><code>create_knowledge_base.py</code> cut the PDF into 979 overlapping passages of about 1,000 characters each.</li>
+          <li>A small embedding model (<code>all-MiniLM-L6-v2</code>, downloaded once, 80 MB) turned each passage into a list of numbers that captures its <em>meaning</em>. That list is called an <strong>embedding</strong>.</li>
+          <li>ChromaDB, a local vector database, stored the passages with their embeddings and page numbers.</li>
+          <li>When asked a question, the <code>query_rules</code> tool embeds the question the same way and returns the three passages closest in meaning, each with its page number.</li>
+        </ol>
+        <p>This is why the answer about Dexterity checks could cite <strong>page 63</strong>.</p>
+      </div>
+
+      <h3>The Character Agent</h3>
+      <div class="prose">
+        <p>Three tools: <code>create_character</code>, <code>find_character_by_name</code> and <code>list_all_characters</code>. Characters are saved in <code>characters.json</code> through TinyDB, a tiny database that's simply a JSON file. All storage goes through two functions, <code>save_character</code> and <code>load_characters</code>, so Chapter 8 only has to swap those two to use cloud storage.</p>
+      </div>
+
+      <div class="code">
+        <div class="head"><span>Each specialist agent (Rules shown; Character uses port 8001)</span><button class="copy" type="button">Copy</button></div>
+<pre><code><span class="k">def</span> create_agent(context_id: str) -&gt; Agent:
+    <span class="k">return</span> Agent(
+        model=<span class="s">"global.amazon.nova-2-lite-v1:0"</span>,
+        tools=[query_rules],
+        name=<span class="s">"Rules Agent"</span>,
+        description=<span class="s">"Rules lookup: fast, page-referenced answers from the Basic Rules knowledge base."</span>,
+        system_prompt=<span class="s">"..."</span>,
+    )
+
+a2a_server = A2AServer(agent_factory=create_agent, port=8000)
+a2a_server.serve()</code></pre>
+      </div>
+      <div class="prose">
+        <p><code>agent_factory</code> is a function that builds a <em>fresh</em> agent for each conversation (each A2A <code>context_id</code>). That keeps two players' chats from mixing.</p>
+      </div>
+
+      <div class="code">
+        <div class="head"><span>5_a2a_integration/agents/gamemaster_orchestrator/gamemaster_orchestrator.py</span><button class="copy" type="button">Copy</button></div>
+<pre><code>mcp_client = MCPClient(<span class="k">lambda</span>: streamablehttp_client(<span class="s">"http://localhost:8002/mcp"</span>))
+a2a_client = make_a2a_client(allowed_endpoints=[<span class="s">"http://localhost:8000"</span>, <span class="s">"http://localhost:8001"</span>])
+
+agent = Agent(
+    model=<span class="s">"global.amazon.nova-2-lite-v1:0"</span>,
+    tools=[mcp_client, a2a_client],
+    structured_output_model=StoryOutput,   <span class="c"># every answer fills these fields</span>
+    system_prompt=<span class="s">"..."</span>,
+)</code></pre>
+      </div>
+      <div class="prose">
+        <p><strong>Structured output</strong> makes the model's reply fill in a fixed form, the <code>StoryOutput</code> Pydantic model, instead of free text: <code>response</code> (the narration), <code>actions_suggestions</code> (what the player could do next), <code>details</code> (which tools or agents were used) and <code>dice_rolls</code>. A web page can display these fields directly without guessing at the text.</p>
+        <p><code>allowed_endpoints</code> is a guest list: the A2A tool refuses to contact any agent not on it.</p>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Question sent to /inquire</th><th>Answer</th><th>Who really did the work (from the logs)</th></tr></thead>
+          <tbody>
+            <tr><td>Roll a d20</td><td>13</td><td>Dice server logged <code>d20 = 13</code></td></tr>
+            <tr><td>Rules for a Dexterity check?</td><td>Acrobatics, Sleight of Hand, Stealth (page 63)</td><td>Rules Agent called <code>query_rules</code></td></tr>
+            <tr><td>Constitution of Arnaud?</td><td>14</td><td>Character Agent found Arnaud</td></tr>
+            <tr><td>Create Thorin Ironbeard</td><td>Created with the exact stats asked for</td><td>Character Agent saved him to <code>characters.json</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout remember">
+        <span class="label">Remember: MCP vs A2A</span>
+        <ul>
+          <li><strong>MCP</strong>: "Here's a tool, call it with these inputs." It's a precise function call with a fixed answer.</li>
+          <li><strong>A2A</strong>: "Here's a colleague, ask them in words." The other side is an agent that thinks, uses its own tools and replies in language.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- CH6 -->
+    <section id="ch6">
+      <h2><span class="ch">CH 6</span>Playing in the web interface</h2>
+      <div class="prose">
+        <p>No code in this chapter. A ready-made web page (<a href="https://aws-samples.github.io/sample-once-upon-agentic-ai/" target="_blank" rel="noopener">aws-samples.github.io/sample-once-upon-agentic-ai</a>) talks to your Game Master on your own machine. Enter a character and the server URL <code>http://localhost:8009</code> (no trailing slash), then play.</p>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Part of the page</th><th>Endpoint it calls</th><th>Where the data comes from</th></tr></thead>
+          <tbody>
+            <tr><td>Story, suggested actions, dice</td><td><code>POST /inquire</code></td><td>The Game Master and its helpers</td></tr>
+            <tr><td>Character sheet</td><td><code>GET /user/{name}</code></td><td><code>characters.json</code></td></tr>
+            <tr><td>Chat history</td><td><code>GET /messages</code></td><td>The Game Master's conversation memory</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout gotcha">
+        <span class="label">Why it said "Load failed"</span>
+        <p>The web page is served over secure <code>https://</code>, while your Game Master is plain <code>http://localhost</code>. <strong>Safari blocks that combination</strong> (mixed content) before the request even leaves your Mac, and "Load failed" is how Safari reports it. Chrome and Firefox allow <code>http://localhost</code>. Chrome may ask to "access devices on your local network": click Allow.</p>
+        <p><strong>CORS</strong> was not the problem. The Game Master's <code>CORSMiddleware</code> already allows requests from any website. The server log simply never received a request from the page.</p>
+      </div>
+    </section>
+
+    <!-- CH7 -->
+    <section id="ch7">
+      <h2><span class="ch">CH 7</span>The harness: a pre-assembled agent</h2>
+      <div class="prose">
+        <p><code>create_harness()</code> from the <code>strands-harness</code> package builds a Strands agent with sensible defaults already switched on. You describe <em>what</em> you want instead of wiring each piece by hand. It still returns a normal <code>Agent</code>, so the rest of the FastAPI app didn't change.</p>
+      </div>
+      <div class="code">
+        <div class="head"><span>7_strands_harness/gamemaster_harness.py</span><button class="copy" type="button">Copy</button></div>
+<pre><code><span class="k">from</span> strands_harness <span class="k">import</span> create_harness
+
+agent = create_harness(
+    model=<span class="s">"global.amazon.nova-2-lite-v1:0"</span>,              <span class="c"># harness default is Claude Opus 5</span>
+    instructions=INSTRUCTIONS,                           <span class="c"># only the game-specific part</span>
+    mcp_servers={<span class="s">"dice"</span>: {<span class="s">"url"</span>: <span class="s">"http://127.0.0.1:8002/mcp"</span>}},
+    tools=[a2a_client],
+    builtin_tools=[],                                     <span class="c"># turn off shell, file, web tools</span>
+    session={<span class="s">"id"</span>: <span class="s">"fantasy-campaign"</span>},                <span class="c"># save the conversation to disk</span>
+    structured_output_model=StoryOutput,
+)</code></pre>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Topic</th><th>Chapter 5: <code>Agent(...)</code></th><th>Chapter 7: <code>create_harness(...)</code></th></tr></thead>
+          <tbody>
+            <tr><td>System prompt</td><td>You write all of it</td><td>You write the game part. The harness adds its own general rules for behaving well.</td></tr>
+            <tr><td>MCP</td><td>You build the <code>MCPClient</code></td><td>You give a standard config and it connects. Tools get the server name as a prefix: <code>dice_roll_dice</code>.</td></tr>
+            <tr><td>Built-in tools</td><td>None</td><td>Shell, file reading, web fetch and more, unless you pass <code>builtin_tools=[]</code></td></tr>
+            <tr><td>Memory of the chat</td><td>Lost when the server stops</td><td>Saved in <code>.agent/sessions/…/fantasy-campaign/</code>. Restart with the same id to continue.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout analogy">
+        <span class="label">Everyday comparison</span>
+        <p>Chapter 5 is building a PC from parts. Chapter 7 is buying a laptop and switching off the apps you don't need. Same computer underneath, less assembly.</p>
+      </div>
+      <div class="callout saw">
+        <span class="label">What we saw</span>
+        <p>Same results as Chapter 5: d20 = 2 (logged by the dice server through <code>dice_roll_dice</code>), the Dexterity rules from page 63, and Arnaud's Constitution of 14, both through <code>a2a_client</code>.</p>
+      </div>
+    </section>
+
+    <!-- CH8 -->
+    <section id="ch8">
+      <h2><span class="ch">CH 8</span>Production with AgentCore (skipped)</h2>
+      <div class="prose">
+        <p>We chose not to run this chapter. For reference, it would take the same four services and deploy them to <strong>Amazon Bedrock AgentCore Runtime</strong>, so they run in the cloud instead of on your laptop:</p>
+        <ul>
+          <li>The dice server, Rules Agent, Character Agent and Game Master become managed cloud services, deployed with the <code>agentcore</code> CLI (which needs Node.js 20+).</li>
+          <li>Calls between them are signed with IAM, AWS's identity system, instead of being open on localhost.</li>
+          <li>Characters and conversations move from <code>characters.json</code> into <strong>AgentCore Memory</strong>.</li>
+          <li>The rules move from local ChromaDB into a managed knowledge base.</li>
+        </ul>
+        <p>It creates real AWS resources that cost money, and every agent would need the Nova <code>model=</code> change too.</p>
+      </div>
+    </section>
+
+    <!-- TROUBLES -->
+    <section id="troubles">
+      <h2>Problems we hit, and how we fixed them</h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Symptom</th><th>What it meant</th><th>Fix</th></tr></thead>
+          <tbody>
+            <tr><td><code>command not found: uv</code> / <code>brew</code></td><td>Neither tool was installed.</td><td>Installed uv with its official script. <code>~/.local/bin</code> was already on the PATH via <code>~/.zshrc</code>.</td></tr>
+            <tr><td><code>Unable to locate credentials</code></td><td>AWS had no idea who you were.</td><td>Installed the AWS CLI, then ran <code>aws configure</code> with an access key.</td></tr>
+            <tr><td><code>Model use case details have not been submitted</code></td><td>Anthropic models need a one-time use-case form per account.</td><td>Submitted it in the Bedrock console. It took effect within about a minute.</td></tr>
+            <tr><td><code>INVALID_PAYMENT_INSTRUMENT</code></td><td>Claude on Bedrock is sold through AWS Marketplace. The account is billed by AWS India (AISPL), where Marketplace can't charge stored cards, so the subscription failed (<code>agreementAvailability: NOT_AVAILABLE</code>).</td><td>Switched to <strong>Amazon Nova 2 Lite</strong>, which Amazon sells directly with no Marketplace step. Getting Claude back needs AWS Support to enable Pay By Invoice.</td></tr>
+            <tr><td>Dice in the answer didn't match the tool calls</td><td>The model invented results instead of calling the tool for every die.</td><td>Added "call it once per die and never invent a result" to the prompt, and checked the tool calls in the logs.</td></tr>
+            <tr><td>Web UI: "Load failed"</td><td>Safari blocked an https page from calling http://localhost.</td><td>Use Chrome or Firefox.</td></tr>
+            <tr><td>"Address already in use"</td><td>Another server was already on that port.</td><td>Stop it (Ctrl+C) or find it with <code>lsof</code>.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout remember">
+        <span class="label">How to check model access yourself</span>
+        <p><code>aws bedrock get-foundation-model-availability --model-id anthropic.claude-sonnet-4-6 --region us-east-1</code> shows <code>authorizationStatus</code> (the form) and <code>agreementAvailability</code> (the Marketplace subscription). Both must say the model is available before Claude will work.</p>
+      </div>
+    </section>
+
+    <!-- GLOSSARY -->
+    <section id="glossary">
+      <h2>Glossary</h2>
+      <dl class="gloss">
+        <div class="term"><dt>Agent</dt><dd>A language model in a loop that can decide to call tools and use their results before answering.</dd></div>
+        <div class="term"><dt>Model</dt><dd>The AI "brain" that reads and writes text, for example Claude Sonnet 4.6 or Amazon Nova 2 Lite.</dd></div>
+        <div class="term"><dt>Amazon Bedrock</dt><dd>AWS's service for using AI models from several companies through one API.</dd></div>
+        <div class="term"><dt>Inference profile</dt><dd>A model ID such as <code>global.amazon.nova-2-lite-v1:0</code> that lets Bedrock route your request to any region with capacity. <code>us.</code> stays in US regions; <code>global.</code> can go anywhere.</dd></div>
+        <div class="term"><dt>System prompt</dt><dd>Standing instructions that set the agent's role, tone and rules for every message.</dd></div>
+        <div class="term"><dt>Tool</dt><dd>A function the agent may choose to call: roll a die, fetch a URL, query a database.</dd></div>
+        <div class="term"><dt>Vended tool</dt><dd>A ready-made tool that ships with Strands, such as <code>http_request</code>, <code>shell</code> or <code>file_editor</code>.</dd></div>
+        <div class="term"><dt>Tool spec</dt><dd>The name, description and input schema the model sees for a tool. It's built from your function's signature and docstring.</dd></div>
+        <div class="term"><dt>Human-in-the-loop</dt><dd>Pausing before a tool runs so a person can approve or reject it.</dd></div>
+        <div class="term"><dt>MCP</dt><dd>Model Context Protocol: a standard way to serve tools from a separate program that any AI app can connect to.</dd></div>
+        <div class="term"><dt>A2A</dt><dd>Agent-to-Agent protocol: a standard way for agents to discover each other and talk in natural language.</dd></div>
+        <div class="term"><dt>Agent card</dt><dd>A JSON "business card" at <code>/.well-known/agent-card.json</code> listing an agent's name, description and skills.</dd></div>
+        <div class="term"><dt>Orchestrator</dt><dd>An agent whose job is to coordinate other agents and tools. Here, the Game Master.</dd></div>
+        <div class="term"><dt>Structured output</dt><dd>Making the model fill in a fixed form (a Pydantic model) instead of replying in free text.</dd></div>
+        <div class="term"><dt>RAG</dt><dd>Retrieval-augmented generation: look up relevant passages first, then answer from them.</dd></div>
+        <div class="term"><dt>Embedding</dt><dd>A list of numbers that captures what a piece of text means, so similar meanings end up close together.</dd></div>
+        <div class="term"><dt>Vector database</dt><dd>A database that finds the stored items closest in meaning to a query. Here, ChromaDB.</dd></div>
+        <div class="term"><dt>Harness</dt><dd>A pre-assembled agent with defaults (built-in tools, sessions, memory) that you trim to fit.</dd></div>
+        <div class="term"><dt>Session</dt><dd>A saved conversation that can be picked up again after a restart.</dd></div>
+        <div class="term"><dt>Port</dt><dd>A numbered "door" on your computer that a server listens on: 8000, 8001, 8002, 8009 in this workshop.</dd></div>
+        <div class="term"><dt>CORS</dt><dd>Browser rules about which websites may call a server. Our servers allow all of them.</dd></div>
+        <div class="term"><dt>AgentCore</dt><dd>AWS's managed service for running agents in production, with built-in memory and identity.</dd></div>
+      </dl>
+    </section>
+
+    <!-- CHEATSHEET -->
+    <section id="cheatsheet">
+      <h2>Command cheat sheet</h2>
+      <div class="prose"><p>Run these from the repository folder, <code>~/Repos/sample-once-upon-agentic-ai</code>.</p></div>
+      <div class="code">
+        <div class="head"><span>Setup</span><button class="copy" type="button">Copy</button></div>
+<pre><code>uv python install            <span class="c"># install Python 3.13.5</span>
+uv sync                      <span class="c"># install all libraries into .venv</span>
+source .venv/bin/activate    <span class="c"># use them in this terminal</span>
+aws sts get-caller-identity  <span class="c"># check which AWS user you are</span></code></pre>
+      </div>
+      <div class="code">
+        <div class="head"><span>Chapters 1–4</span><button class="copy" type="button">Copy</button></div>
+<pre><code>python 1_strands_basics/simple_agent.py
+python 2_vended_tools/agent_with_vended_tools.py
+python 2_vended_tools/bonus_quest.py
+python 3_custom_tools/agent_with_dice_roll_tool.py
+python 4_mcp_integration/dice_roll_mcp_server.py      <span class="c"># terminal 1</span>
+python 4_mcp_integration/gamemaster_mcp_client.py     <span class="c"># terminal 2</span></code></pre>
+      </div>
+      <div class="code">
+        <div class="head"><span>Chapter 5 (one terminal each), then 6 or 7</span><button class="copy" type="button">Copy</button></div>
+<pre><code><span class="c"># one time: download DnD_BasicRules_2018.pdf into 5_a2a_integration/utils/, then</span>
+cd 5_a2a_integration/utils &amp;&amp; python create_knowledge_base.py &amp;&amp; cd ../..
+
+python 4_mcp_integration/dice_roll_mcp_server.py                              <span class="c"># :8002</span>
+python 5_a2a_integration/agents/rules_agent/rules_agent.py                    <span class="c"># :8000</span>
+python 5_a2a_integration/agents/character_agent/character_agent.py            <span class="c"># :8001</span>
+python 5_a2a_integration/agents/gamemaster_orchestrator/gamemaster_orchestrator.py  <span class="c"># :8009</span>
+<span class="c"># or, for Chapter 7, run this on :8009 instead of the line above</span>
+python 7_strands_harness/gamemaster_harness.py
+
+curl -X POST localhost:8009/inquire -H 'Content-Type: application/json' \
+     -d '{"question": "Roll a d20"}'</code></pre>
+      </div>
+      <div class="code">
+        <div class="head"><span>Housekeeping</span><button class="copy" type="button">Copy</button></div>
+<pre><code>lsof -nP -iTCP:8009 -sTCP:LISTEN     <span class="c"># who is using a port?</span>
+git checkout -- 5_a2a_integration/agents/character_agent/characters.json  <span class="c"># reset characters</span>
+rm -rf .agent 5_a2a_integration/utils/rules_knowledge_base   <span class="c"># remove generated data</span></code></pre>
+      </div>
+    </section>
+
+    <footer>
+      <p>Written from a hands-on run of the AWS "Once Upon Agentic AI" workshop on 20 October 2026. Chapters 1–7 were completed on Amazon Nova 2 Lite. Chapter 8 was skipped and no AWS resources were created. The full instructions are in the <a href="https://catalog.us-east-1.prod.workshops.aws/workshops/e1493217-4bc7-42f4-87d9-e231acd743bc/en-US/0-pre-requisites" target="_blank" rel="noopener">AWS workshop catalog</a>.</p>
+    </footer>
+  </main>
+</div>
+
+<script>
+document.querySelectorAll('.copy').forEach(function (btn) {
+  btn.addEventListener('click', function () {
+    var code = btn.closest('.code').querySelector('pre');
+    var text = code.innerText;
+    var done = function (label) { btn.textContent = label; setTimeout(function () { btn.textContent = 'Copy'; }, 1600); };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(function () { done('Copied'); }, function () { selectText(code); done('Selected'); });
+    } else { selectText(code); done('Selected'); }
+  });
+});
+function selectText(el) {
+  var r = document.createRange(); r.selectNodeContents(el);
+  var s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
+}
+</script>
+</body>
+</html>
